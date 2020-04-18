@@ -18,20 +18,21 @@ public class LifeInDark : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(AnalyseLight.GetKeyComponent<Fire>()light!=0)
-        {
+        //if(AnalyseLight.GetKeyComponent<Fire>().light!=0)
+        //{
 
-            //Verifica a luminosidade do jogo, se ela for maior que zero, o if executa
-            CurrentLight=true;
-        }
-        else
-        {
-            CurrentLight=false;
-        }
-        Counter+=Time.deltaTime;
+        //    //Verifica a luminosidade do jogo, se ela for maior que zero, o if executa
+        //    CurrentLight=true;
+        //}
+        //else
+        //{
+        //    CurrentLight=false;
+        //}
+        CurrentLight = true;
+        Counter +=Time.deltaTime;
         if(CurrentLight==false && Counter >=1)
         {
-            Life.GetComponent<Lifebar>()Life+=-1; /*Acessa a Barra de Vida */
+            //Life.GetComponent<Lifebar>()Life+=-1; /*Acessa a Barra de Vida */
             Counter=0;
         }
 
@@ -40,10 +41,10 @@ public class LifeInDark : MonoBehaviour
 
             Counter=0;
         }
-        if(Life.GetComponent<Lifebar>()Life==0)
+        if(false /*Life.GetComponent<Lifebar>()Life==0*/)
         {
 
-            Destroy(AnalyseLight.GetComponent<Player>());       /* Mata o Jogador */
+            //Destroy(AnalyseLight.GetComponent<Player>());       /* Mata o Jogador */
 
             //GAMEOVER
         }
