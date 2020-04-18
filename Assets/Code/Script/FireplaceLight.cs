@@ -92,7 +92,7 @@ public class FireplaceLight : MonoBehaviour
             fuel += fuelIncreaseByWood;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && fuel >= minimumFuelForTorch) 
+        if (Input.GetKeyDown(KeyCode.Space) && fuel >= minimumFuelForTorch && isPlayerNear == true) 
         {
             fuel -= fuelDecreaseByTorch;
             torchScript.torchFuel = torchInitialFuel;
