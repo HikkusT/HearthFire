@@ -87,7 +87,7 @@ public class FireplaceLight : MonoBehaviour
             }
         }
         
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E) && isPlayerNear == true)
         {
             fuel += fuelIncreaseByWood;
         }
