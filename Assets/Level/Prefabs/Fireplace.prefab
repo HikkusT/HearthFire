@@ -212,7 +212,6 @@ MonoBehaviour:
   fatorDeAlcanceDeLuz: 1
   fatorDeIntensidadeDeLuz: 1
   torch: {fileID: 0}
-  canvas: {fileID: 0}
   world: {fileID: 0}
   fireplaceText: {fileID: 0}
   fireplaceTextBackimage: {fileID: 0}

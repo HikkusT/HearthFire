@@ -374,6 +374,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch
       objectReference: {fileID: 0}
+    - target: {fileID: 5923250588908486539, guid: 8903efe538685e34b92ce946e22d3488,
+        type: 3}
+      propertyPath: torchFuel
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5923250588908486543, guid: 8903efe538685e34b92ce946e22d3488,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -531,6 +536,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 14.89, y: 0, z: 0}
+--- !u!1 &973982752 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5923250588908486532, guid: 8903efe538685e34b92ce946e22d3488,
+    type: 3}
+  m_PrefabInstance: {fileID: 897046017}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1533404947 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6740937070106773787, guid: 1189746200a0f314d8884cef3b2ac77f,
@@ -549,9 +560,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a63c7e02701933548ab02caaa4c68567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNearDistanceforWood: 3
+  player: {fileID: 1914044498}
   isPlayerNear: 0
-  playerHasWood: 0
+  isPlayerInventoryFull: 0
   isPlayerChopping: 0
+  isPlayerOnLight: 0
+  isPlayerOnPenumbra: 0
+  isTorchOn: 0
+  playerHasWood: 0
+  displayWoodWarning: 0
+  displayInventoryFullWarning: 0
+  playerDistanceToFireplace: 10
+  life: 0
+  wood: 0
+  maxWood: 10
 --- !u!1 &1859799663
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +684,26 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6440532986992469574, guid: 1189746200a0f314d8884cef3b2ac77f,
+        type: 3}
+      propertyPath: torch
+      value: 
+      objectReference: {fileID: 973982752}
+    - target: {fileID: 6440532986992469574, guid: 1189746200a0f314d8884cef3b2ac77f,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 7154644595950456900}
+    - target: {fileID: 6440532986992469574, guid: 1189746200a0f314d8884cef3b2ac77f,
+        type: 3}
+      propertyPath: fireplaceText
+      value: 
+      objectReference: {fileID: 7154644595434906315}
+    - target: {fileID: 6440532986992469574, guid: 1189746200a0f314d8884cef3b2ac77f,
+        type: 3}
+      propertyPath: fireplaceTextBackimage
+      value: 
+      objectReference: {fileID: 7154644595352714196}
     - target: {fileID: 6740937070106773787, guid: 1189746200a0f314d8884cef3b2ac77f,
         type: 3}
       propertyPath: m_Name
@@ -723,6 +766,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1189746200a0f314d8884cef3b2ac77f, type: 3}
+--- !u!1 &7154644595352714196 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1149813848587124920, guid: 5a9f1939403aa7147b32572790e01048,
+    type: 3}
+  m_PrefabInstance: {fileID: 7835861755857664876}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7154644595434906315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1149813848671656359, guid: 5a9f1939403aa7147b32572790e01048,
+    type: 3}
+  m_PrefabInstance: {fileID: 7835861755857664876}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7154644595950456900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1149813848023067432, guid: 5a9f1939403aa7147b32572790e01048,
+    type: 3}
+  m_PrefabInstance: {fileID: 7835861755857664876}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7835861755857664876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -840,15 +901,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7835861755106581190, guid: 5a9f1939403aa7147b32572790e01048,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7835861756618103069, guid: 5a9f1939403aa7147b32572790e01048,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7835861756618103069, guid: 5a9f1939403aa7147b32572790e01048,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7835861756667383616, guid: 5a9f1939403aa7147b32572790e01048,
+        type: 3}
+      propertyPath: torch
+      value: 
+      objectReference: {fileID: 973982752}
+    - target: {fileID: 7835861756667383616, guid: 5a9f1939403aa7147b32572790e01048,
+        type: 3}
+      propertyPath: playerVariables
+      value: 
+      objectReference: {fileID: 1533404953}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a9f1939403aa7147b32572790e01048, type: 3}

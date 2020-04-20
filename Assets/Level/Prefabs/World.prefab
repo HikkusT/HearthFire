@@ -48,9 +48,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrain: {fileID: 0}
   _envirommentManager: {fileID: 1348993033}
-  player: {fileID: 0}
-  campfire: {fileID: 2345062530442443114, guid: 375a3ff18ea6ec243b681a0757be518b,
-    type: 3}
+  player: {fileID: 7767302182013711273, guid: 1b38038206afe994f8b0132596b128e5, type: 3}
+  campfire: {fileID: 594642520824476209, guid: 375a3ff18ea6ec243b681a0757be518b, type: 3}
+  torch: {fileID: 5923250588908486532, guid: 8903efe538685e34b92ce946e22d3488, type: 3}
+  canvas: {fileID: 1149813848023067432, guid: 5a9f1939403aa7147b32572790e01048, type: 3}
+  fireplaceText: {fileID: 0}
+  fireplaceTextBackimage: {fileID: 0}
 --- !u!114 &1348993033
 MonoBehaviour:
   m_ObjectHideFlags: 0
