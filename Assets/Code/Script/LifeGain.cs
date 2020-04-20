@@ -34,7 +34,7 @@ public class NewBehaviourScript1 : MonoBehaviour
             }
 
 
-            Counter=0;
+            Counter = 0;
 
         }
 

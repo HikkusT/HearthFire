@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject inventoryFullWarning;
     [SerializeField] PlayerVariableHolder playerVariables;
     [SerializeField] Text woodBarText;
+    [SerializeField] Image healthBarImage;
 
     Slider torchBarSlider;
 
@@ -45,6 +46,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         healthBarSlider.value = (playerVariables.maxLife - playerVariables.life) / playerVariables.maxLife;
+        healthBarImage.color = barGradient.Evaluate(1f - healthBarSlider.normalizedValue);
 
         fuelPercentage = (torchScript.torchFuel / torchInitialFuel) * 100f;
 
