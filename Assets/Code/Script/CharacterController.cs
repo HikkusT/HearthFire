@@ -7,7 +7,8 @@ public class CharacterController : MonoBehaviour
     [HideInInspector] public Voxel currentVoxel;
     Queue<Voxel> path;
     public World world;
-    public float velocity = 10.0f;
+    public float velocity = 4.0f;
+    public float fixVelocity = 2.0f;
     private Chunk chunk;
 
     void Start()
@@ -27,14 +28,25 @@ public class CharacterController : MonoBehaviour
             {
                 path.Dequeue();
             } else {
-                MoveToVoxel(path.Peek());
+                MoveToVoxel(path.Peek(), velocity);
             }
         } 
+        else
+        {
+            MoveToVoxel(currentVoxel, fixVelocity);
+        }
     }
 
-    void MoveToVoxel(Voxel voxel)
+    void MoveToVoxel(Voxel voxel, float velocity)
     {
-        transform.position += Vector3.Normalize(voxel.transform.position - transform.position) * (velocity * Time.deltaTime);
+        if (Vector3.Distance(voxel.transform.position, transform.position) > 0.05f)
+        {
+            transform.position += Vector3.Normalize(voxel.transform.position - transform.position) * (velocity * Time.deltaTime);
+        }
+        else
+        {
+            transform.position = voxel.transform.position;
+        }
     }
 
     public void PlanMovement(Voxel voxel)
