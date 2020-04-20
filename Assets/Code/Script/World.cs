@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    [SerializeField] Chunk terrain;
+    [SerializeField] public Chunk terrain;
     [SerializeField] EnvironmentManager _envirommentManager;
     [SerializeField] GameObject player;
     [SerializeField] GameObject campfire;
