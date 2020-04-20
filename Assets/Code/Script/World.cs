@@ -8,6 +8,13 @@ public class World : MonoBehaviour
     [SerializeField] EnvironmentManager _envirommentManager;
     [SerializeField] GameObject player;
     [SerializeField] GameObject campfire;
+    
+    public GameObject torch;
+    public GameObject canvas;
+    public GameObject fireplaceText;
+    public GameObject fireplaceTextBackimage;
+    
+    GameObject fireplace;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +27,7 @@ public class World : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void SetupPlayer()

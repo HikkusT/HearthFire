@@ -43,7 +43,7 @@ public class Voxel : MonoBehaviour
         Destroy(scenarioProp);
     }
 
-    public void SpawnAt(GameObject obj)
+    public void SpawnAt(GameObject obj) 
     {
         Instantiate(obj, transform.position + topOffset, Quaternion.identity);
     }
