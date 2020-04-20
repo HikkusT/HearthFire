@@ -5,15 +5,20 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] float torchInitialFuel;
+    [SerializeField] float torchInitialFuel; //colocar o mesmo que o da fireplace
+    [SerializeField] float warningDisplayTime;
 
     [SerializeField] Gradient barGradient;
 
-    GameObject torchText;
-    GameObject torchTextBackimage;
-    GameObject torchBar;
-    GameObject torch;
-    GameObject barSlider;
+    [SerializeField] GameObject torchText;
+    [SerializeField] GameObject torchTextBackimage;
+    [SerializeField] GameObject torchBar;
+    [SerializeField] GameObject torch;
+    [SerializeField] GameObject barSlider;
+    [SerializeField] GameObject woodWarning;
+    [SerializeField] GameObject inventoryFullWarning;
+    [SerializeField] PlayerVariableHolder playerVariables;
+    [SerializeField] Text woodBarText;
 
     Slider torchBarSlider;
 
@@ -25,22 +30,21 @@ public class UIManager : MonoBehaviour
 
     float fuelPercentage;
 
+    bool displayOnEffect;
+
     void Start()
     {
-        torchText = GameObject.Find("TorchText");
         torchStatus = torchText.GetComponent<Text>();
-        torchTextBackimage = GameObject.Find("TorchTextBackimage");
-        torchBar = GameObject.Find("TorchBar");
         torchBarSlider = torchBar.GetComponent<Slider>();
-        torch = GameObject.Find("Torch");
         torchScript = torch.GetComponent<TorchLight>();
-        barSlider = GameObject.Find("BarSlider");
         fill = barSlider.GetComponent<Image>();
     }
 
     void Update()
     {
         fuelPercentage = (torchScript.torchFuel / torchInitialFuel) * 100f;
+
+        woodBarText.text = string.Format("Wood:{0}/{1}Kg", playerVariables.wood.ToString("f0"), playerVariables.maxWood.ToString("f0"));
 
         if (fuelPercentage > 0)
         {
@@ -57,5 +61,37 @@ public class UIManager : MonoBehaviour
         {
             torchBar.SetActive(false);
         }
+
+        if(playerVariables.displayWoodWarning == true && displayOnEffect == false)
+        {
+            StartCoroutine(WarningCleanCoroutine(warningDisplayTime));
+            woodWarning.SetActive(true);
+            displayOnEffect = true;
+        }
+
+        if (playerVariables.displayInventoryFullWarning == true && displayOnEffect == false)
+        {
+            StartCoroutine(WarningCleanCoroutine(warningDisplayTime));
+            inventoryFullWarning.SetActive(true);
+            displayOnEffect = true;
+        }
+        
+        if (playerVariables.displayInventoryFullWarning == true && displayOnEffect == true)
+        {
+            playerVariables.displayInventoryFullWarning = false;
+        }
+        
+        if (playerVariables.displayWoodWarning == true && displayOnEffect == true)
+        {
+            playerVariables.displayWoodWarning = false;
+        }
+
+        IEnumerator WarningCleanCoroutine(float cleanTime)
+        {
+            yield return new WaitForSeconds(cleanTime);
+            woodWarning.SetActive(false);
+            inventoryFullWarning.SetActive(false);
+            displayOnEffect = false;
+        }   
     }
 }

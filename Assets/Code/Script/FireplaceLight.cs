@@ -13,38 +13,42 @@ public class FireplaceLight : MonoBehaviour
     [SerializeField] float minimumFuelForTorch;
     [SerializeField] float fatorDeAlcanceDeLuz;
     [SerializeField] float fatorDeIntensidadeDeLuz;
+    public GameObject torch;
+    public GameObject world;
+    public GameObject fireplaceText;
+    public GameObject fireplaceTextBackimage;
+    [SerializeField] Light luz;
 
     float timeLeft;
     float fuel;
+    float wood;
     float internalTimeManager; // utilizado para atualizar o horario da update executada em cada segundo na linha 52
     float nextUpdate; //Idem
 
     Transform luminousArea;
     Transform penumbraArea;
     
-    Light luz;
-    
-    GameObject torch;
-    GameObject fireplaceText;
-    GameObject fireplaceTextBackimage;
-    
-    public TorchLight torchScript;
-    public Text fireplaceStatus;
+    PlayerVariableHolder playerVariables;
+    TorchLight torchScript;
+    Text fireplaceStatus;
 
-    public bool isPlayerNear;
+    bool playerHasWood;
+    bool isPlayerNear;
 
     void Start()
     {
+        world = GameObject.Find("World");
+        torch = world.GetComponent<World>().torch;
+        fireplaceText = world.GetComponent<World>().fireplaceText;
+        fireplaceTextBackimage = world.GetComponent<World>().fireplaceTextBackimage;
         fuel = fireplaceInitialFuel;
         luminousArea = this.gameObject.transform.GetChild(0);
         penumbraArea = this.gameObject.transform.GetChild(1);
         luz = GetComponentInChildren<Light>();
-        torch = GameObject.Find("Torch");
+        playerVariables = world.GetComponent<PlayerVariableHolder>();
         torch.SetActive(false);
         torchScript = torch.GetComponent<TorchLight>();
-        fireplaceText = GameObject.Find("LumberFireplaceText");
         fireplaceStatus = fireplaceText.GetComponent<Text>();
-        fireplaceTextBackimage = GameObject.Find("LumberTextBackimage");
     }
 
     void Update()
@@ -63,11 +67,12 @@ public class FireplaceLight : MonoBehaviour
             }
         }
         
-        if(isPlayerNear == true && Time.time > 0.5f)
+        if(playerVariables.isPlayerNear == true && Time.time > 0.5f)
         {
             internalTimeManager += Time.deltaTime;
             fireplaceText.SetActive(true);
             fireplaceTextBackimage.SetActive(true);
+            wood = fuel / fuelIncreaseByWood;
 
             if (internalTimeManager >= nextUpdate)
             {
@@ -78,7 +83,7 @@ public class FireplaceLight : MonoBehaviour
 
             if (timeLeft.ToString("f0") == "1") 
             {
-                fireplaceStatus.text = string.Format("There is {0} Kg of Lumber Left, Meaning Around 1 Minute of Fire", fuel.ToString("f0"));
+                fireplaceStatus.text = string.Format("There is {0} Kg of Lumber Left, Meaning Around 1 Minute of Fire", wood.ToString("f0"));
             }
             
             else
@@ -86,17 +91,32 @@ public class FireplaceLight : MonoBehaviour
                 fireplaceStatus.text = string.Format("There is {0} Kg of Lumber Left, Meaning Around {1} Minutes of Fire", fuel.ToString("f0"), timeLeft.ToString("f0"));
             }
         }
-        
-        if(Input.GetKeyDown(KeyCode.E) && isPlayerNear == true)
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            fuel += fuelIncreaseByWood;
+            isPlayerNear = playerVariables.isPlayerNear;
+            playerHasWood = playerVariables.playerHasWood;
+
+            if(isPlayerNear == true && playerHasWood == true)
+            {
+                fuel += (fuelIncreaseByWood * playerVariables.wood);
+                playerVariables.wood = 0f;
+            }
+            if(isPlayerNear == true && playerHasWood == false && playerVariables.displayWoodWarning == false)
+            {
+                playerVariables.displayWoodWarning = true;
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && fuel >= minimumFuelForTorch && isPlayerNear == true) 
+        if (Input.GetKeyDown(KeyCode.Space) && fuel >= minimumFuelForTorch)
         {
-            fuel -= fuelDecreaseByTorch;
-            torchScript.torchFuel = torchInitialFuel;
-            torch.SetActive(true);
+            isPlayerNear = playerVariables.isPlayerNear;
+            if (isPlayerNear == true)
+            { 
+                fuel -= fuelDecreaseByTorch;
+                torchScript.torchFuel = torchInitialFuel;
+                torch.SetActive(true);
+            }
         }
 
         if (fuel >= 0)

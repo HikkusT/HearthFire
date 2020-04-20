@@ -211,9 +211,12 @@ MonoBehaviour:
   minimumFuelForTorch: 40
   fatorDeAlcanceDeLuz: 1
   fatorDeIntensidadeDeLuz: 1
-  torchScript: {fileID: 0}
-  fireplaceStatus: {fileID: 0}
-  isPlayerNear: 0
+  torch: {fileID: 0}
+  canvas: {fileID: 0}
+  world: {fileID: 0}
+  fireplaceText: {fileID: 0}
+  fireplaceTextBackimage: {fileID: 0}
+  luz: {fileID: 594642521355481811}
 --- !u!1 &594642520996721966
 GameObject:
   m_ObjectHideFlags: 0

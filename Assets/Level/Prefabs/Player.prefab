@@ -139,5 +139,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentVoxel: {fileID: 0}
-  pathManager: {fileID: 5099492394463650114, guid: 1189746200a0f314d8884cef3b2ac77f,
-    type: 3}
