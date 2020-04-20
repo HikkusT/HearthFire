@@ -128,6 +128,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6683965731003703068, guid: 1b38038206afe994f8b0132596b128e5,
+        type: 3}
+      propertyPath: world
+      value: 
+      objectReference: {fileID: 1533404951}
     - target: {fileID: 846127945397595572, guid: 1b38038206afe994f8b0132596b128e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -818,6 +823,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2127181000}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1533404951 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6440532986992469574, guid: 1189746200a0f314d8884cef3b2ac77f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2127181000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533404947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7911945e4a0a0b04ab03d396b9fa0f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1533404953
 MonoBehaviour:
   m_ObjectHideFlags: 0
