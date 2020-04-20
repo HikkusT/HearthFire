@@ -6,7 +6,7 @@ public class CharacterController : MonoBehaviour
 {
     [HideInInspector] public Voxel currentVoxel;
     Queue<Voxel> path;
-    Voxel nextVoxel;
+    // Voxel nextVoxel;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +18,23 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nextVoxel && nextVoxel != currentVoxel)
+        if (path.Count > 0)
         {
-            MoveToVoxel(nextVoxel);
+            if (path.Peek() == currentVoxel) 
+            {
+                path.Dequeue();
+            } else {
+                MoveToVoxel(path.Peek());
+            }
+            /*
+            if (nextVoxel && nextVoxel != currentVoxel)
+            {
+                MoveToVoxel(nextVoxel);
 
-            if (currentVoxel == nextVoxel && path.Count != 0)
-                nextVoxel = path.Dequeue();
+                if (currentVoxel == nextVoxel && path.Count != 0)
+                    nextVoxel = path.Dequeue();
+            }
+            */
         }
     }
 
@@ -40,6 +51,6 @@ public class CharacterController : MonoBehaviour
     public void PlanMovement(Voxel voxel)
     {
         path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
-        nextVoxel = path.Dequeue();
+        // nextVoxel = path.Dequeue();
     }
 }
