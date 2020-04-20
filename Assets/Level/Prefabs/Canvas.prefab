@@ -519,7 +519,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -85, y: 27}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1929700905
 CanvasRenderer:
@@ -709,10 +709,11 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  healthBarSlider: {fileID: 0}
   torchText: {fileID: 7835861757013234598}
   torchTextBackimage: {fileID: 7835861757018839588}
   torchBar: {fileID: 7835861755106581190}
-  torch: {fileID: 0}
+  torch: {fileID: 5923250588908486532, guid: 8903efe538685e34b92ce946e22d3488, type: 3}
   barSlider: {fileID: 7835861756618103068}
   woodWarning: {fileID: 1543966354}
   inventoryFullWarning: {fileID: 1202852210}
@@ -884,7 +885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7835861755106581191
 RectTransform:
   m_ObjectHideFlags: 0
@@ -990,7 +991,7 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.5}
   m_SizeDelta: {x: 0, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}

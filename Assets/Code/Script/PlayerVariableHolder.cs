@@ -24,10 +24,11 @@ public class PlayerVariableHolder : MonoBehaviour
     [HideInInspector] public float wood;
     
     public float maxWood;
-
+    public float maxLife;
+    
     void Start()
     {
- 
+        life = maxLife;
     }
 
     void Update()

@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Gradient barGradient;
 
+    [SerializeField] Slider healthBarSlider;
+
     [SerializeField] GameObject torchText;
     [SerializeField] GameObject torchTextBackimage;
     [SerializeField] GameObject torchBar;
@@ -42,6 +44,8 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        healthBarSlider.value = (playerVariables.maxLife - playerVariables.life) / playerVariables.maxLife;
+
         fuelPercentage = (torchScript.torchFuel / torchInitialFuel) * 100f;
 
         woodBarText.text = string.Format("Wood:{0}/{1}Kg", playerVariables.wood.ToString("f0"), playerVariables.maxWood.ToString("f0"));
