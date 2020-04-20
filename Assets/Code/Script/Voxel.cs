@@ -7,7 +7,20 @@ public class Voxel : MonoBehaviour
 {
     public int x, y;
     public Vector3 topOffset;
+
+    public int AStarID;
+    public double AStarAcumulatedValue;
+    public double AStarValue;
+    public bool AStarClose;
+    public Voxel AStarParent;
+
     private GameObject scenarioProp;
+    private Chunk _chunk;
+    public Chunk chunk
+    {
+        get { return _chunk; }
+        set { _chunk = value; }
+    }
 
     void Awake()
     {
@@ -38,5 +51,55 @@ public class Voxel : MonoBehaviour
     public void SnapTo(GameObject obj)
     {
         obj.transform.position = transform.position + topOffset;
+    }
+
+    public List<Voxel> GetNeighborsEightConnected()
+    {
+        // TODO: adapt when multiple chunks
+        List<Voxel> neighbors = GetNeighborsFourConnected();
+
+        if (chunk.IsPositionInside(x + 1, y + 1))
+        {
+            neighbors.Add(chunk.chunk[x + 1][y + 1]);
+        }
+        if (chunk.IsPositionInside(x - 1, y - 1))
+        {
+            neighbors.Add(chunk.chunk[x - 1][y - 1]);
+        }
+        if (chunk.IsPositionInside(x + 1, y - 1))
+        {
+            neighbors.Add(chunk.chunk[x + 1][y - 1]);
+        }
+        if (chunk.IsPositionInside(x - 1, y + 1))
+        {
+            neighbors.Add(chunk.chunk[x - 1][y + 1]);
+        }
+
+        return neighbors;
+    }
+
+    public List<Voxel> GetNeighborsFourConnected()
+    {
+        // TODO: adapt when multiple chunks
+        List<Voxel> neighbors = new List<Voxel>();
+        
+        if (chunk.IsPositionInside(x, y + 1))
+        {
+            neighbors.Add(chunk.chunk[x][y + 1]);
+        }
+        if (chunk.IsPositionInside(x, y - 1))
+        {
+            neighbors.Add(chunk.chunk[x][y - 1]);
+        }
+        if (chunk.IsPositionInside(x + 1, y))
+        {
+            neighbors.Add(chunk.chunk[x + 1][y]);
+        }
+        if (chunk.IsPositionInside(x - 1, y))
+        {
+            neighbors.Add(chunk.chunk[x - 1][y]);
+        }
+
+        return neighbors;
     }
 }
