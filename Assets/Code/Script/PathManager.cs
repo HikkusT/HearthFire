@@ -119,7 +119,7 @@ public class PathManager : MonoBehaviour
             
             SetVoxelClose(currentVoxel);
 
-            List<Voxel> neighbors = currentVoxel.GetNeighborsEightConnected();
+            List<Voxel> neighbors = currentVoxel.GetNeighbors();
             for (int index = 0; index < neighbors.Count; index++)
             {
                 currentNeighbor = neighbors[index];
