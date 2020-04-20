@@ -99,13 +99,12 @@ public class PathManager : MonoBehaviour
 
         currentVoxel.AStarParent = null;
         SetVoxelOpen(currentVoxel);
-        heapQueue.Add(currentCost, currentVoxel);
+        heapQueue.Add(currentVoxel.AStarValue, currentVoxel);
         if (currentVoxel == goalVoxel)
         {
             return new List<Voxel>();
         }
 
-        int j = 0;
         bool found = false;
         while (heapQueue.Count > 0 && !found)
         {
@@ -135,21 +134,28 @@ public class PathManager : MonoBehaviour
                 calculatedAStarValue = calculatedAStarAcumulatedValue 
                     + CalculateHeuristicCost(currentNeighbor);
 
-                if (IsVoxelAStarOpen(currentNeighbor) && calculatedAStarAcumulatedValue > currentNeighbor.AStarAcumulatedValue)
+                if (IsVoxelAStarOpen(currentNeighbor))
                 {
-                    continue;
+                    if (calculatedAStarAcumulatedValue > currentNeighbor.AStarAcumulatedValue)
+                    {
+                        continue;
+                    } 
+                    else
+                    {
+                        heapQueue.Remove(currentNeighbor.AStarValue);
+                    }
                 }
-
-                currentNeighbor.AStarAcumulatedValue = calculatedAStarAcumulatedValue;
-                currentNeighbor.AStarValue = calculatedAStarValue;
 
                 currentNeighbor.AStarParent = currentVoxel;
                 SetVoxelOpen(currentNeighbor);
+
                 while (heapQueue.ContainsKey(calculatedAStarValue))
                 {
-                    calculatedAStarValue += random.Next(1, 1000)/100000f; ;
+                    calculatedAStarValue += random.Next(1, 1000)/100000f;
                 }
-                heapQueue.Add(calculatedAStarValue, currentNeighbor);
+                currentNeighbor.AStarAcumulatedValue = calculatedAStarAcumulatedValue;
+                currentNeighbor.AStarValue = calculatedAStarValue;
+                heapQueue.Add(currentNeighbor.AStarValue, currentNeighbor);
                 if (currentNeighbor == goalVoxel)
                 {
                     currentVoxel = currentNeighbor;
