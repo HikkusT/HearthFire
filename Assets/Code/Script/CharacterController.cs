@@ -51,6 +51,9 @@ public class CharacterController : MonoBehaviour
 
     public void PlanMovement(Voxel voxel)
     {
-        path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
+        if (!voxel.hasProp)
+        {
+            path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
+        }
     }
 }

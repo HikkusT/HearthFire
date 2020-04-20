@@ -17,8 +17,8 @@ public class Voxel : MonoBehaviour
     private GameObject scenarioProp;
     private Chunk _chunk;
 
-    private bool hasProp = false;
-    private bool hasAFourConnectecNeighborProp = false;
+    public bool hasProp = false;
+    public bool hasAFourConnectecNeighborProp = false;
 
     public Chunk chunk
     {
