@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
+    // TODO: Create initial i and initial j, to adapt all the positional logic when there we have many chuncks
+    // [SerializeField] public int initialI;
+    // [SerializeField] public int initialJ;
+
     [SerializeField] public int size;
     [SerializeField] Voxel voxelPrefab;
     public Voxel[][] chunk;
+
+    public bool IsPositionInside(int i, int j)
+    {
+        // TODO: need to be updated once there are many chuncks
+        return i >= 0 && i < size && j >= 0 && j < size;
+    }
 
     void Awake()
     {
@@ -21,6 +31,7 @@ public class Chunk : MonoBehaviour
                 voxel.x = i;
                 voxel.y = j;
                 chunk[i][j] = voxel;
+                voxel.chunk = this;
             }
         }
 
