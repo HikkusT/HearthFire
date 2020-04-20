@@ -6,18 +6,21 @@ public class CharacterController : MonoBehaviour
 {
     [HideInInspector] public Voxel currentVoxel;
     Queue<Voxel> path;
-    // Voxel nextVoxel;
+    public World world;
+    public float velocity = 10.0f;
+    private Chunk chunk;
 
-    // Start is called before the first frame update
     void Start()
     {
         path = new Queue<Voxel>();
         EventManager.Instance.SubscribeToEvent(PlanMovement);
+        chunk = world.terrain;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        currentVoxel = chunk.GetVoxelAt((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.z));
+
         if (path.Count > 0)
         {
             if (path.Peek() == currentVoxel) 
@@ -26,31 +29,16 @@ public class CharacterController : MonoBehaviour
             } else {
                 MoveToVoxel(path.Peek());
             }
-            /*
-            if (nextVoxel && nextVoxel != currentVoxel)
-            {
-                MoveToVoxel(nextVoxel);
-
-                if (currentVoxel == nextVoxel && path.Count != 0)
-                    nextVoxel = path.Dequeue();
-            }
-            */
-        }
+        } 
     }
 
     void MoveToVoxel(Voxel voxel)
     {
-        transform.position = Vector3.Lerp(transform.position, voxel.transform.position, 0.5f);
-
-        if (Vector2.Distance(transform.position, voxel.transform.position) < 0.05f)
-        {
-            currentVoxel = voxel;
-        }
+        transform.position += Vector3.Normalize(voxel.transform.position - transform.position) * (velocity * Time.deltaTime);
     }
 
     public void PlanMovement(Voxel voxel)
     {
         path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
-        // nextVoxel = path.Dequeue();
     }
 }
