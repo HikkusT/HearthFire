@@ -13,10 +13,8 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-		ZWrite Off
-		Lighting Off
-		Fog { Mode Off }
+        Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
+		Zwrite Off
 
 		Blend SrcAlpha OneMinusSrcAlpha
 
@@ -27,7 +25,6 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
@@ -43,10 +40,14 @@
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+				float depth : TEXCOORD1;
+				float3 pos: TEXCOORD2;
+				float4 screenPos: TEXCOORD3;
             };
 
             sampler2D _MainTex;
 			sampler2D _NoiseTex;
+			sampler2D _CameraDepthTexture;
 			float _Speed;
 			float _NoiseStepMin;
 			float _NoiseStepMax;
@@ -61,6 +62,9 @@
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
+				COMPUTE_EYEDEPTH(o.depth);
+				o.pos = UnityObjectToViewPos(v.vertex);
+				o.screenPos = ComputeScreenPos(v.vertex);
                 return o;
             }
 
@@ -76,6 +80,12 @@
 				float transparency = step(_NoiseStepMin, fire);
 				float isInner = step(_NoiseStepMax, fire);
 				fixed3 col = isInner * _InnerFireColor + (1 - isInner) * _OuterFireColor;
+#if UNITY_UV_STARTS_AT_TOP
+					i.screenPos.y = 1 - i.screenPos.y;
+#endif
+				float depth = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, i.screenPos);
+				float depthDelta = LinearEyeDepth(depth).r - length(i.pos);
+				depthDelta = smoothstep(0, 0.3, depthDelta);
 
                 return fixed4(col, transparency);
             }
