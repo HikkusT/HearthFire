@@ -13,6 +13,7 @@ public class FireplaceLight : MonoBehaviour
     [SerializeField] float minimumFuelForTorch;
     [SerializeField] float fatorDeAlcanceDeLuz;
     [SerializeField] float fatorDeIntensidadeDeLuz;
+    [SerializeField] float lightInitialRadius;
 
     [SerializeField] AudioSource pickupSound;
     [SerializeField] AudioSource fireplaceAudio;
@@ -20,20 +21,22 @@ public class FireplaceLight : MonoBehaviour
     [SerializeField] AudioClip failSound;
     [SerializeField] AudioClip fuelIncreaseSound;
 
-    public GameObject torch;
-    public GameObject world;
-    public GameObject fireplaceText;
-    public GameObject fireplaceTextBackimage;
     [SerializeField] Light luz;
 
+    [SerializeField] Transform rayCastFirePoint;
+    GameObject torch;
+    GameObject world;
+    GameObject fireplaceText;
+    GameObject fireplaceTextBackimage;
+    GameObject player;
+    
     float timeLeft;
     float fuel;
     float wood;
     float internalTimeManager; // utilizado para atualizar o horario da update executada em cada segundo na linha 52+
     float nextUpdate; //Idem
 
-    Transform luminousArea;
-    Transform penumbraArea;
+    RaycastHit hit;
     
     PlayerVariableHolder playerVariables;
     TorchLight torchScript;
@@ -45,12 +48,11 @@ public class FireplaceLight : MonoBehaviour
     void Start()
     {
         world = GameObject.Find("World");
+        player = world.GetComponent<World>().player;
         torch = world.GetComponent<World>().torch;
         fireplaceText = world.GetComponent<World>().fireplaceText;
         fireplaceTextBackimage = world.GetComponent<World>().fireplaceTextBackimage;
         fuel = fireplaceInitialFuel;
-        luminousArea = this.gameObject.transform.GetChild(0);
-        penumbraArea = this.gameObject.transform.GetChild(1);
         luz = GetComponentInChildren<Light>();
         playerVariables = world.GetComponent<PlayerVariableHolder>();
         torch.SetActive(false);
@@ -61,7 +63,7 @@ public class FireplaceLight : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerNear == false)
+        if (playerVariables.isPlayerNear == false)
         {
             if (internalTimeManager != 0f && nextUpdate != 1f)
             {
@@ -150,9 +152,7 @@ public class FireplaceLight : MonoBehaviour
         if (fuel >= 0)
         {
             fuel -= fuelDecayRate;
-
-            luminousArea.localScale = new Vector3(fuel, 0.1f, fuel);
-            penumbraArea.localScale = new Vector3(fuel * 1.7f, 0.1f, fuel * 1.7f);
+            playerVariables.lightRadius = Mathf.Sqrt((fuel * fatorDeIntensidadeDeLuz)) * lightInitialRadius;
             luz.intensity = (fuel * fatorDeIntensidadeDeLuz);
             luz.range = (fuel * fatorDeAlcanceDeLuz);
         }
@@ -165,6 +165,21 @@ public class FireplaceLight : MonoBehaviour
         if (playerVariables.soundEffects == false || fuel <= 0)
         {
             fireplaceAudio.mute = true;
+        }
+
+        playerVariables.playerDistanceToFireplace = Mathf.Abs(Vector3.Distance(player.transform.position, this.gameObject.transform.position));
+
+        Physics.Raycast(rayCastFirePoint.position, player.transform.position, out hit, playerVariables.playerDistanceToFireplace);
+        
+        if (hit.collider.CompareTag("Player") == true) 
+        {
+            playerVariables.isLightPathToplayerBlocked = false;
+            Debug.Log("Hit Player");
+        }
+        if (hit.collider.CompareTag("Player") == false)
+        {
+            playerVariables.isLightPathToplayerBlocked = true;
+            Debug.Log(hit.transform.gameObject.name);
         }
     }
 }

@@ -6,7 +6,7 @@ public class World : MonoBehaviour
 {
     [SerializeField] public Chunk terrain;
     [SerializeField] EnvironmentManager _envirommentManager;
-    [SerializeField] GameObject player;
+    public GameObject player;
     [SerializeField] GameObject campfire;
     
     public GameObject torch;

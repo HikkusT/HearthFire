@@ -9,21 +9,23 @@ public class PlayerVariableHolder : MonoBehaviour
     
     [SerializeField] GameObject player;
 
-    public bool isPlayerNear;
+    [HideInInspector] public bool isPlayerNear;
     [HideInInspector] public bool isPlayerInventoryFull;
     [HideInInspector] public bool isPlayerChopping;
-    [HideInInspector] public bool isPlayerOnLight;
+     public bool isPlayerOnLight;
     [HideInInspector] public bool isPlayerOnPenumbra;
     [HideInInspector] public bool isTorchOn;
     [HideInInspector] public bool playerHasWood;
     [HideInInspector] public bool displayWoodWarning;
     [HideInInspector] public bool displayInventoryFullWarning;
     [HideInInspector] public bool soundEffects;
+    [HideInInspector] public bool isLightPathToplayerBlocked;
 
     [HideInInspector] public float playerDistanceToFireplace;
     [HideInInspector] public float life;
     [HideInInspector] public float wood;
-    
+    [HideInInspector] public float lightRadius;
+
     public float maxWood;
     public float maxLife;
     
@@ -57,6 +59,10 @@ public class PlayerVariableHolder : MonoBehaviour
         {
             isPlayerOnLight = true;
         }
+        if (playerDistanceToFireplace <= lightRadius && isLightPathToplayerBlocked == false)
+        {
+            isPlayerOnLight = true;
+        }
         else
         {
             isPlayerOnLight = false;
@@ -66,10 +72,9 @@ public class PlayerVariableHolder : MonoBehaviour
         {
             isPlayerNear = true;
         }
-        /*else
+        else
         {
             isPlayerNear = false;
-        }*/
-        
+        }
     }
 }
