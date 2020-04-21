@@ -10,11 +10,13 @@ public class CharacterController : MonoBehaviour
     public float velocity = 4.0f;
     public float fixVelocity = 2.0f;
     private Chunk chunk;
+    private bool isInteracting = false;
 
     void Start()
     {
         path = new Queue<Voxel>();
         EventManager.Instance.SubscribeToEvent(PlanMovement);
+        EventManager.Instance.SubscribeToEvent(UpdateState);
         chunk = world.terrain;
     }
 
@@ -50,9 +52,14 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    void UpdateState(object obj, bool state)
+    {
+        isInteracting = state;
+    }
+
     public void PlanMovement(Voxel voxel)
     {
-        if (!voxel.hasProp)
+        if (!voxel.hasProp && !isInteracting)
         {
             path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
         }

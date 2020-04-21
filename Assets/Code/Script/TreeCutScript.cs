@@ -39,6 +39,7 @@ public class TreeCutScript : MonoBehaviour
     {
         if (isReady && playerVariables.isPlayerChopping == false)
         {
+            EventManager.Instance.DispatchEvent(this, true);
             playerVariables.isPlayerChopping = true;
             StartCoroutine(chopper());
         }
@@ -67,6 +68,7 @@ public class TreeCutScript : MonoBehaviour
         playerVariables.isPlayerChopping = false;
         
         Destroy(gameObject);
+        EventManager.Instance.DispatchEvent(this, false);
     }
 
 }

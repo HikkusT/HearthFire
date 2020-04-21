@@ -10,6 +10,9 @@ public class EventManager : MonoBehaviour
     public delegate void OnClickVoxelEvent(Voxel voxel);
     private event OnClickVoxelEvent onClickVoxelEvent;
 
+    public delegate void UpdateInteractEvent(object obj, bool newState);
+    private event UpdateInteractEvent updateInteractEvent;
+
 
     private void Awake()
     {
@@ -31,8 +34,21 @@ public class EventManager : MonoBehaviour
         }
     }
 
+    public void DispatchEvent(object obj, bool newState)
+    {
+        foreach (UpdateInteractEvent runEvent in updateInteractEvent.GetInvocationList())
+        {
+            runEvent.Invoke(obj, newState);
+        }
+    }
+
     public void SubscribeToEvent(OnClickVoxelEvent callBack)
     {
         onClickVoxelEvent += callBack;
+    }
+
+    public void SubscribeToEvent(UpdateInteractEvent callBack)
+    {
+        updateInteractEvent += callBack;
     }
 }
