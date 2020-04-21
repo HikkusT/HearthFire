@@ -24,7 +24,7 @@ public class Voxel : MonoBehaviour
 
     void Awake()
     {
-        topOffset = transform.up * 0.5f;
+
     }
 
     private void OnMouseDown()
