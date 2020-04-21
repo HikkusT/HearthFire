@@ -10,6 +10,14 @@ public class TreeCutScript : MonoBehaviour
     [SerializeField] float treeChoppingTime;
     [SerializeField] AudioSource choppingSound;
 
+    //DisableThisStart:
+    [SerializeField] float maxWoodPileSize;
+    [SerializeField] float minWoodPileSize;
+    float woodForPlayer;
+    AudioSource pickupSound;
+    [SerializeField] AudioSource failSound;
+    //DisableThisEnd:
+
     Slider choppingBarSlider;
 
     GameObject world;
@@ -21,13 +29,20 @@ public class TreeCutScript : MonoBehaviour
     
     void OnMouseDown()
     {
+        //some changes here too
         world = GameObject.Find("World");
         playerVariables = world.GetComponent<PlayerVariableHolder>();
         choppingBarCanvas = this.gameObject.transform.GetChild(1).gameObject;
         choppingBarSlider = choppingBarCanvas.GetComponentInChildren<Slider>();
+        pickupSound = world.GetComponent<AudioSource>();
 
+        if (playerVariables.isPlayerInventoryFull == true)
+        {
+            playerVariables.displayInventoryFullWarning = true;
+            failSound.Play(0);
+        }
 
-        if (playerVariables.isPlayerChopping == false)
+        if (playerVariables.isPlayerChopping == false && playerVariables.isPlayerInventoryFull == false)
         {
             EventManager.Instance.DispatchEvent(voxel);
 
@@ -62,9 +77,36 @@ public class TreeCutScript : MonoBehaviour
         choppingBarSlider.value = 0f;
         choppingSound.Stop();
 
-        woodPileSpawn = Instantiate(woodPile, transform.position, transform.rotation) as GameObject;
-        woodPileSpawn.GetComponent<WoodPileScript>().world = world;
+        //To set back woodpile enable this
+        //woodPileSpawn = Instantiate(woodPile, transform.position, transform.rotation) as GameObject;
+        //woodPileSpawn.GetComponent<WoodPileScript>().world = world;
+
+        //DisableThisStart:
+        woodForPlayer = Mathf.Ceil(Random.Range(minWoodPileSize, maxWoodPileSize));
+
+        if (playerVariables.maxWood - playerVariables.wood >= woodForPlayer)
+        {
+         
+            playerVariables.wood += woodForPlayer;
+            
+            if (playerVariables.soundEffects == true)
+            {
+                pickupSound.Play(0);
+            }
+            Destroy(gameObject);
+        }
+        else
+        {
+            playerVariables.wood = playerVariables.maxWood;
+            if (playerVariables.soundEffects == true)
+            {
+                pickupSound.Play(0);
+            }
+        }
+    
         
+        //DisableThisEnd:
+
         playerVariables.isPlayerChopping = false;
         
         Destroy(gameObject);

@@ -11,15 +11,11 @@ public class TorchLight : MonoBehaviour
     [SerializeField] float fatorDeIntensidadeDeLuz;
 
     GameObject torch;
-    Transform luminousArea;
-    Transform penumbraArea;
     Light luz;
 
     void Start()
     {
         torch = this.gameObject;
-        luminousArea = this.gameObject.transform.GetChild(0);
-        penumbraArea = this.gameObject.transform.GetChild(1);
         luz = GetComponentInChildren<Light>();
     }
 
@@ -29,8 +25,6 @@ public class TorchLight : MonoBehaviour
         {
             torchFuel -= torchDecayRate;
             
-            luminousArea.localScale = new Vector3(torchFuel * 10f, 0.1f, torchFuel * 10f);
-            penumbraArea.localScale = new Vector3(torchFuel * 17f, 0.1f, torchFuel * 17f);
             luz.intensity = (torchFuel * fatorDeIntensidadeDeLuz);
             luz.range = (torchFuel * fatorDeAlcanceDeLuz);
         }
