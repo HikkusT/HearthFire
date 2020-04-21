@@ -152,7 +152,7 @@ public class FireplaceLight : MonoBehaviour
         if (fuel >= 0)
         {
             fuel -= fuelDecayRate;
-            playerVariables.lightRadius = Mathf.Sqrt((fuel * fatorDeIntensidadeDeLuz)) * lightInitialRadius;
+            playerVariables.lightRadius = (Mathf.Sqrt((fuel * fatorDeIntensidadeDeLuz))) * lightInitialRadius;
             luz.intensity = (fuel * fatorDeIntensidadeDeLuz);
             luz.range = (fuel * fatorDeAlcanceDeLuz);
         }
@@ -169,7 +169,7 @@ public class FireplaceLight : MonoBehaviour
 
         playerVariables.playerDistanceToFireplace = Mathf.Abs(Vector3.Distance(player.transform.position, this.gameObject.transform.position));
 
-        if (Physics.Raycast(rayCastFirePoint.position, ((player.transform.position + 0.5f * Vector3.up) - rayCastFirePoint.position), out hit, luz.range))
+        if (Physics.Raycast(rayCastFirePoint.position, ((player.transform.position + 0.5f * Vector3.up) - rayCastFirePoint.position), out hit, playerVariables.lightRadius))
         { 
             if (hit.collider.CompareTag("Player") == true)
                 playerVariables.isLightPathToplayerBlocked = false;
@@ -180,7 +180,5 @@ public class FireplaceLight : MonoBehaviour
         {
             playerVariables.isLightPathToplayerBlocked = true;
         }
-
-        Debug.DrawRay(rayCastFirePoint.position, luz.range * ((player.transform.position + 0.5f * Vector3.up) - rayCastFirePoint.position).normalized, Color.magenta);
     }
 }

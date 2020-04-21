@@ -5,14 +5,14 @@ using UnityEngine;
 public class PlayerVariableHolder : MonoBehaviour
 {
     [SerializeField] float playerNearDistanceforWood;
-    
-    
+
+    [SerializeField] GameObject gameOver;
     [SerializeField] GameObject player;
 
     [HideInInspector] public bool isPlayerNear;
     [HideInInspector] public bool isPlayerInventoryFull;
     [HideInInspector] public bool isPlayerChopping;
-     public bool isPlayerOnLight;
+    [HideInInspector] public bool isPlayerOnLight;
     [HideInInspector] public bool isPlayerOnPenumbra;
     [HideInInspector] public bool isTorchOn;
     [HideInInspector] public bool playerHasWood;
@@ -28,6 +28,8 @@ public class PlayerVariableHolder : MonoBehaviour
 
     public float maxWood;
     public float maxLife;
+
+    float Counter;
     
     void Start()
     {
@@ -36,21 +38,23 @@ public class PlayerVariableHolder : MonoBehaviour
     }
 
     void Update()
-    {      
-        if(wood == maxWood) 
+    {
+        Counter += Time.deltaTime;
+
+        if (wood == maxWood)
         {
             isPlayerInventoryFull = true;
         }
-        else 
+        else
         {
             isPlayerInventoryFull = false;
         }
 
-        if(wood == 0)
+        if (wood == 0)
         {
             playerHasWood = false;
         }
-        else 
+        else
         {
             playerHasWood = true;
         }
@@ -75,6 +79,25 @@ public class PlayerVariableHolder : MonoBehaviour
         else
         {
             isPlayerNear = false;
+        }
+
+        if(life == 0f)
+        {
+            Time.timeScale = 0.0f;
+            gameOver.SetActive(true);
+        }
+
+        if (Counter >= 1f)
+        {
+            Counter = 0f;
+            if (isPlayerOnLight == true && life < maxLife)
+            {
+                life += 1f;
+            }
+            if (isPlayerOnLight == false)
+            {
+                life -= 1f;
+            }
         }
     }
 }
