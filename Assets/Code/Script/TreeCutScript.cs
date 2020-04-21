@@ -17,6 +17,7 @@ public class TreeCutScript : MonoBehaviour
     GameObject woodPileSpawn;
 
     PlayerVariableHolder playerVariables;
+    private bool isReady = false;
     
     void OnMouseDown()
     {
@@ -28,11 +29,17 @@ public class TreeCutScript : MonoBehaviour
 
         if (playerVariables.isPlayerChopping == false)
         {
-            playerVariables.isPlayerChopping = true;
-
-            //adiciona mover o jogador para a arvore
             EventManager.Instance.DispatchEvent(voxel);
 
+            isReady = true;
+        }
+    }
+
+    public void Interact()
+    {
+        if (isReady && playerVariables.isPlayerChopping == false)
+        {
+            playerVariables.isPlayerChopping = true;
             StartCoroutine(chopper());
         }
     }

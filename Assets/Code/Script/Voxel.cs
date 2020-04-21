@@ -14,7 +14,7 @@ public class Voxel : MonoBehaviour
     public bool AStarClose;
     public Voxel AStarParent;
 
-    private GameObject scenarioProp;
+    public GameObject scenarioProp;
     private Chunk _chunk;
 
     public bool hasProp = false;
@@ -88,6 +88,17 @@ public class Voxel : MonoBehaviour
         }
     }
 
+    private void AddNeighborWithProp(int x, int y, List<Voxel> neighbors)
+    {
+        if (chunk.IsPositionInside(x, y))
+        {
+            if (chunk.chunk[x][y].hasProp)
+            {
+                neighbors.Add(chunk.chunk[x][y]);
+            }
+        }
+    }
+
     public List<Voxel> GetNeighbors()
     {
         if (hasAFourConnectecNeighborProp)
@@ -124,5 +135,30 @@ public class Voxel : MonoBehaviour
         AddNeighbor(x - 1, y, neighbors);
 
         return neighbors;
+    }
+
+    private List<Voxel> GetNeighborsFourConnectedWithProp()
+    {
+        // TODO: adapt when multiple chunks
+        List<Voxel> neighbors = new List<Voxel>();
+
+        AddNeighborWithProp(x, y + 1, neighbors);
+        AddNeighborWithProp(x, y - 1, neighbors);
+        AddNeighborWithProp(x + 1, y, neighbors);
+        AddNeighborWithProp(x - 1, y, neighbors);
+
+        return neighbors;
+    }
+
+    public void Interact()
+    {
+        if (scenarioProp && scenarioProp.GetComponent<TreeCutScript>() != null)
+            scenarioProp.GetComponent<TreeCutScript>().Interact();
+    }
+
+    public void InteractWithNeighbors()
+    {
+        foreach (Voxel neighbor in GetNeighborsFourConnectedWithProp())
+            neighbor.Interact();
     }
 }

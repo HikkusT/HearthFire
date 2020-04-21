@@ -34,6 +34,7 @@ public class CharacterController : MonoBehaviour
         else
         {
             MoveToVoxel(currentVoxel, fixVelocity);
+            currentVoxel.InteractWithNeighbors();
         }
     }
 
