@@ -211,8 +211,8 @@ MonoBehaviour:
   fuelIncreaseByWood: 10
   fuelDecreaseByTorch: 20
   minimumFuelForTorch: 40
-  fatorDeAlcanceDeLuz: 1
-  fatorDeIntensidadeDeLuz: 1
+  fatorDeAlcanceDeLuz: 0.2
+  fatorDeIntensidadeDeLuz: 0.03
   pickupSound: {fileID: 0}
   fireplaceAudio: {fileID: -7866336501471461012}
   fireplaceFuelIncreaseAudio: {fileID: 8255771565388989227}
@@ -456,7 +456,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.7776627, b: 0.033018887, a: 1}
+  m_Color: {r: 0.77254903, g: 0.23137255, b: 0.039215688, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 1
@@ -612,7 +612,7 @@ PrefabInstance:
     - target: {fileID: 5925522690319840790, guid: 3e18c202b0e81c242aa2085fc694dded,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6518928326824021827, guid: 3e18c202b0e81c242aa2085fc694dded,
         type: 3}
