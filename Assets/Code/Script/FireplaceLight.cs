@@ -13,6 +13,13 @@ public class FireplaceLight : MonoBehaviour
     [SerializeField] float minimumFuelForTorch;
     [SerializeField] float fatorDeAlcanceDeLuz;
     [SerializeField] float fatorDeIntensidadeDeLuz;
+
+    [SerializeField] AudioSource pickupSound;
+    [SerializeField] AudioSource fireplaceAudio;
+    [SerializeField] AudioSource fireplaceFuelIncreaseAudio;
+    [SerializeField] AudioClip failSound;
+    [SerializeField] AudioClip fuelIncreaseSound;
+
     public GameObject torch;
     public GameObject world;
     public GameObject fireplaceText;
@@ -22,7 +29,7 @@ public class FireplaceLight : MonoBehaviour
     float timeLeft;
     float fuel;
     float wood;
-    float internalTimeManager; // utilizado para atualizar o horario da update executada em cada segundo na linha 52
+    float internalTimeManager; // utilizado para atualizar o horario da update executada em cada segundo na linha 52+
     float nextUpdate; //Idem
 
     Transform luminousArea;
@@ -49,6 +56,7 @@ public class FireplaceLight : MonoBehaviour
         torch.SetActive(false);
         torchScript = torch.GetComponent<TorchLight>();
         fireplaceStatus = fireplaceText.GetComponent<Text>();
+        pickupSound = world.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -101,21 +109,41 @@ public class FireplaceLight : MonoBehaviour
             {
                 fuel += (fuelIncreaseByWood * playerVariables.wood);
                 playerVariables.wood = 0f;
+                if (playerVariables.soundEffects == true)
+                {
+                    fireplaceFuelIncreaseAudio.clip = fuelIncreaseSound;
+                    fireplaceFuelIncreaseAudio.Play(0);
+                }
             }
             if(isPlayerNear == true && playerHasWood == false && playerVariables.displayWoodWarning == false)
             {
                 playerVariables.displayWoodWarning = true;
+                fireplaceFuelIncreaseAudio.clip = failSound;
+                fireplaceFuelIncreaseAudio.Play(0);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && fuel >= minimumFuelForTorch)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            isPlayerNear = playerVariables.isPlayerNear;
-            if (isPlayerNear == true)
-            { 
-                fuel -= fuelDecreaseByTorch;
-                torchScript.torchFuel = torchInitialFuel;
-                torch.SetActive(true);
+            if (fuel >= minimumFuelForTorch)
+            {
+                isPlayerNear = playerVariables.isPlayerNear;
+                if (isPlayerNear == true)
+                {
+                    fuel -= fuelDecreaseByTorch;
+                    torchScript.torchFuel = torchInitialFuel;
+                    torch.SetActive(true);
+                    if (playerVariables.soundEffects == true)
+                    {
+                        pickupSound.Play(0);
+                    }
+                }
+            }
+        
+            if(fuel < minimumFuelForTorch && playerVariables.soundEffects == true) 
+            {
+                fireplaceFuelIncreaseAudio.clip = failSound;
+                fireplaceFuelIncreaseAudio.Play(0);
             }
         }
 
@@ -127,6 +155,16 @@ public class FireplaceLight : MonoBehaviour
             penumbraArea.localScale = new Vector3(fuel * 1.7f, 0.1f, fuel * 1.7f);
             luz.intensity = (fuel * fatorDeIntensidadeDeLuz);
             luz.range = (fuel * fatorDeAlcanceDeLuz);
+        }
+
+        if (playerVariables.soundEffects == true) 
+        {
+            fireplaceAudio.mute = false;
+        }
+
+        if (playerVariables.soundEffects == false || fuel <= 0)
+        {
+            fireplaceAudio.mute = true;
         }
     }
 }

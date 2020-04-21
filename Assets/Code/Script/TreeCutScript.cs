@@ -7,6 +7,7 @@ public class TreeCutScript : MonoBehaviour
 {
     [SerializeField] GameObject woodPile;
     [SerializeField] float treeChoppingTime;
+    [SerializeField] AudioSource choppingSound;
 
     Slider choppingBarSlider;
 
@@ -38,6 +39,7 @@ public class TreeCutScript : MonoBehaviour
     {
         choppingBarCanvas.SetActive(true);
 
+        choppingSound.Play(0);
         yield return new WaitForSeconds(treeChoppingTime / 5); //poderia colocar o som de chop a cada update
         choppingBarSlider.value = 0.8f;
         yield return new WaitForSeconds(treeChoppingTime / 5);
@@ -48,6 +50,7 @@ public class TreeCutScript : MonoBehaviour
         choppingBarSlider.value = 0.2f;
         yield return new WaitForSeconds(treeChoppingTime/5);
         choppingBarSlider.value = 0f;
+        choppingSound.Stop();
 
         woodPileSpawn = Instantiate(woodPile, transform.position, transform.rotation) as GameObject;
         woodPileSpawn.GetComponent<WoodPileScript>().world = world;

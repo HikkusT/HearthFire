@@ -7,6 +7,9 @@ public class WoodPileScript : MonoBehaviour
 {
     [SerializeField] float maxWoodPileSize;
     [SerializeField] float minWoodPileSize;
+    [SerializeField] AudioSource failSound;
+
+    AudioSource pickupSound;
 
     float woodPileInitialSize;
     float woodPileSize;
@@ -22,6 +25,7 @@ public class WoodPileScript : MonoBehaviour
 
     void OnMouseDown()
     {
+        pickupSound = world.GetComponent<AudioSource>();
         playerVariables = world.GetComponent<PlayerVariableHolder>();
         choppingBarCanvas = this.gameObject.transform.GetChild(1).gameObject;
         choppingBarSlider = choppingBarCanvas.GetComponentInChildren<Slider>();
@@ -37,6 +41,7 @@ public class WoodPileScript : MonoBehaviour
         if (playerVariables.isPlayerInventoryFull == true)
         {
             playerVariables.displayInventoryFullWarning = true;
+            failSound.Play(0);
         }
 
         if (playerVariables.isPlayerInventoryFull == false)
@@ -46,6 +51,10 @@ public class WoodPileScript : MonoBehaviour
                 //mover o jogador a pilha
 
                 playerVariables.wood += woodPileSize;
+                if (playerVariables.soundEffects == true)
+                {
+                    pickupSound.Play(0);
+                }
                 Destroy(gameObject);
             }
 
@@ -58,6 +67,10 @@ public class WoodPileScript : MonoBehaviour
                 woodPileSize -= playerVariables.maxWood - playerVariables.wood;
                 choppingBarSlider.value = woodPileSize / woodPileInitialSize;
                 playerVariables.wood += playerVariables.maxWood - playerVariables.wood;
+                if (playerVariables.soundEffects == true)
+                {
+                    pickupSound.Play(0);
+                }
             }
         }
     }

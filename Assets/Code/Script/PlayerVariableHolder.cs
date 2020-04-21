@@ -18,16 +18,19 @@ public class PlayerVariableHolder : MonoBehaviour
     [HideInInspector] public bool playerHasWood;
     [HideInInspector] public bool displayWoodWarning;
     [HideInInspector] public bool displayInventoryFullWarning;
+    [HideInInspector] public bool soundEffects;
 
     [HideInInspector] public float playerDistanceToFireplace;
     [HideInInspector] public float life;
     [HideInInspector] public float wood;
     
     public float maxWood;
-
+    public float maxLife;
+    
     void Start()
     {
- 
+        life = maxLife;
+        soundEffects = true;
     }
 
     void Update()

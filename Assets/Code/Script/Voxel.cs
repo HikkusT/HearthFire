@@ -16,6 +16,10 @@ public class Voxel : MonoBehaviour
 
     private GameObject scenarioProp;
     private Chunk _chunk;
+
+    public bool hasProp = false;
+    public bool hasAFourConnectecNeighborProp = false;
+
     public Chunk chunk
     {
         get { return _chunk; }
@@ -32,10 +36,28 @@ public class Voxel : MonoBehaviour
         EventManager.Instance.DispatchEvent(this);
     }
 
+    private void TellAllNeighborsAboutProp()
+    {
+        TellNeighborAboutProp(x + 1, y);
+        TellNeighborAboutProp(x - 1, y);
+        TellNeighborAboutProp(x, y + 1);
+        TellNeighborAboutProp(x, y - 1);
+    }
+
+    private void TellNeighborAboutProp(int x, int y)
+    {
+        if (chunk.IsPositionInside(x, y))
+        {
+            chunk.GetVoxelAt(x, y).hasAFourConnectecNeighborProp = true;
+        }
+    }
+
     public void SpawnScenarioProp(GameObject prop)
     {
         scenarioProp = Instantiate(prop, transform);
         scenarioProp.transform.localPosition = topOffset;
+        hasProp = true;
+        TellAllNeighborsAboutProp();
     }
 
     public void DestroyScenarioProp()
@@ -53,52 +75,51 @@ public class Voxel : MonoBehaviour
         obj.transform.position = transform.position + topOffset;
     }
 
-    public List<Voxel> GetNeighborsEightConnected()
+    private void AddNeighbor(int x, int y, List<Voxel> neighbors)
+    {
+        if (chunk.IsPositionInside(x, y))
+        {
+            if (!chunk.chunk[x][y].hasProp)
+            {
+                neighbors.Add(chunk.chunk[x][y]);
+            }
+        }
+    }
+
+    public List<Voxel> GetNeighbors()
+    {
+        if (hasAFourConnectecNeighborProp)
+        {
+            return GetNeighborsFourConnected();
+        }
+        else
+        {
+            return GetNeighborsEightConnected();
+        }
+    }
+
+    private List<Voxel> GetNeighborsEightConnected()
     {
         // TODO: adapt when multiple chunks
         List<Voxel> neighbors = GetNeighborsFourConnected();
 
-        if (chunk.IsPositionInside(x + 1, y + 1))
-        {
-            neighbors.Add(chunk.chunk[x + 1][y + 1]);
-        }
-        if (chunk.IsPositionInside(x - 1, y - 1))
-        {
-            neighbors.Add(chunk.chunk[x - 1][y - 1]);
-        }
-        if (chunk.IsPositionInside(x + 1, y - 1))
-        {
-            neighbors.Add(chunk.chunk[x + 1][y - 1]);
-        }
-        if (chunk.IsPositionInside(x - 1, y + 1))
-        {
-            neighbors.Add(chunk.chunk[x - 1][y + 1]);
-        }
+        AddNeighbor(x + 1, y + 1, neighbors);
+        AddNeighbor(x - 1, y - 1, neighbors);
+        AddNeighbor(x + 1, y - 1, neighbors);
+        AddNeighbor(x - 1, y + 1, neighbors);
 
         return neighbors;
     }
 
-    public List<Voxel> GetNeighborsFourConnected()
+    private List<Voxel> GetNeighborsFourConnected()
     {
         // TODO: adapt when multiple chunks
         List<Voxel> neighbors = new List<Voxel>();
         
-        if (chunk.IsPositionInside(x, y + 1))
-        {
-            neighbors.Add(chunk.chunk[x][y + 1]);
-        }
-        if (chunk.IsPositionInside(x, y - 1))
-        {
-            neighbors.Add(chunk.chunk[x][y - 1]);
-        }
-        if (chunk.IsPositionInside(x + 1, y))
-        {
-            neighbors.Add(chunk.chunk[x + 1][y]);
-        }
-        if (chunk.IsPositionInside(x - 1, y))
-        {
-            neighbors.Add(chunk.chunk[x - 1][y]);
-        }
+        AddNeighbor(x, y + 1, neighbors);
+        AddNeighbor(x, y - 1, neighbors);
+        AddNeighbor(x + 1, y, neighbors);
+        AddNeighbor(x - 1, y, neighbors);
 
         return neighbors;
     }

@@ -6,51 +6,54 @@ public class CharacterController : MonoBehaviour
 {
     [HideInInspector] public Voxel currentVoxel;
     Queue<Voxel> path;
-    // Voxel nextVoxel;
+    public World world;
+    public float velocity = 4.0f;
+    public float fixVelocity = 2.0f;
+    private Chunk chunk;
 
-    // Start is called before the first frame update
     void Start()
     {
         path = new Queue<Voxel>();
         EventManager.Instance.SubscribeToEvent(PlanMovement);
+        chunk = world.terrain;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        currentVoxel = chunk.GetVoxelAt((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.z));
+
         if (path.Count > 0)
         {
             if (path.Peek() == currentVoxel) 
             {
                 path.Dequeue();
             } else {
-                MoveToVoxel(path.Peek());
+                MoveToVoxel(path.Peek(), velocity);
             }
-            /*
-            if (nextVoxel && nextVoxel != currentVoxel)
-            {
-                MoveToVoxel(nextVoxel);
-
-                if (currentVoxel == nextVoxel && path.Count != 0)
-                    nextVoxel = path.Dequeue();
-            }
-            */
+        } 
+        else
+        {
+            MoveToVoxel(currentVoxel, fixVelocity);
         }
     }
 
-    void MoveToVoxel(Voxel voxel)
+    void MoveToVoxel(Voxel voxel, float velocity)
     {
-        transform.position = Vector3.Lerp(transform.position, voxel.transform.position, 0.5f);
-
-        if (Vector2.Distance(transform.position, voxel.transform.position) < 0.05f)
+        if (Vector3.Distance(voxel.transform.position, transform.position) > 0.05f)
         {
-            currentVoxel = voxel;
+            transform.position += Vector3.Normalize(voxel.transform.position - transform.position) * (velocity * Time.deltaTime);
+        }
+        else
+        {
+            transform.position = voxel.transform.position;
         }
     }
 
     public void PlanMovement(Voxel voxel)
     {
-        path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
-        // nextVoxel = path.Dequeue();
+        if (!voxel.hasProp)
+        {
+            path = PathManager.Instance.CalculatePath(currentVoxel, voxel);
+        }
     }
 }
