@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TreeCutScript : MonoBehaviour
 {
+    [HideInInspector] public Voxel voxel;
     [SerializeField] GameObject woodPile;
     [SerializeField] float treeChoppingTime;
     [SerializeField] AudioSource choppingSound;
@@ -30,6 +31,7 @@ public class TreeCutScript : MonoBehaviour
             playerVariables.isPlayerChopping = true;
 
             //adiciona mover o jogador para a arvore
+            EventManager.Instance.DispatchEvent(voxel);
 
             StartCoroutine(chopper());
         }

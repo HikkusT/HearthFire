@@ -44,6 +44,9 @@ public class Chunk : MonoBehaviour
 
     public Voxel GetVoxelAt(int x, int y)
     {
-        return chunk[x][y];
+        if (x >= 0 && x < size && y >= 0 && y < size)
+            return chunk[x][y];
+        else
+            return null;
     }
 }

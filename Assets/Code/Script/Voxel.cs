@@ -57,6 +57,8 @@ public class Voxel : MonoBehaviour
         scenarioProp = Instantiate(prop, transform);
         scenarioProp.transform.localPosition = topOffset;
         hasProp = true;
+        if (scenarioProp.GetComponent<TreeCutScript>() != null)
+            scenarioProp.GetComponent<TreeCutScript>().voxel = _chunk.GetVoxelAt(x - 1, y);
         TellAllNeighborsAboutProp();
     }
 
