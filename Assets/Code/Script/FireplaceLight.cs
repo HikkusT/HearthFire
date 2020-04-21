@@ -169,17 +169,18 @@ public class FireplaceLight : MonoBehaviour
 
         playerVariables.playerDistanceToFireplace = Mathf.Abs(Vector3.Distance(player.transform.position, this.gameObject.transform.position));
 
-        Physics.Raycast(rayCastFirePoint.position, player.transform.position, out hit, playerVariables.playerDistanceToFireplace);
-        
-        if (hit.collider.CompareTag("Player") == true) 
-        {
-            playerVariables.isLightPathToplayerBlocked = false;
-            Debug.Log("Hit Player");
+        if (Physics.Raycast(rayCastFirePoint.position, ((player.transform.position + 0.5f * Vector3.up) - rayCastFirePoint.position), out hit, luz.range))
+        { 
+            if (hit.collider.CompareTag("Player") == true)
+                playerVariables.isLightPathToplayerBlocked = false;
+            else
+                playerVariables.isLightPathToplayerBlocked = true;
         }
-        if (hit.collider.CompareTag("Player") == false)
+        else
         {
             playerVariables.isLightPathToplayerBlocked = true;
-            Debug.Log(hit.transform.gameObject.name);
         }
+
+        Debug.DrawRay(rayCastFirePoint.position, luz.range * ((player.transform.position + 0.5f * Vector3.up) - rayCastFirePoint.position).normalized, Color.magenta);
     }
 }

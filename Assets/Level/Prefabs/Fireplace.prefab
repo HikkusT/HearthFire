@@ -116,9 +116,9 @@ MonoBehaviour:
   fuelIncreaseByWood: 10
   fuelDecreaseByTorch: 20
   minimumFuelForTorch: 40
-  fatorDeAlcanceDeLuz: 0.2
-  fatorDeIntensidadeDeLuz: 0.03
-  lightInitialRadius: 100
+  fatorDeAlcanceDeLuz: 0.1
+  fatorDeIntensidadeDeLuz: 0.1
+  lightInitialRadius: 10
   pickupSound: {fileID: 0}
   fireplaceAudio: {fileID: -7866336501471461012}
   fireplaceFuelIncreaseAudio: {fileID: 8255771565388989227}
